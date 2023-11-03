@@ -1,0 +1,17 @@
+{
+  "Comment": "An example of the Amazon States Language using wait states",
+  "StartAt": "FirstState",
+  "States":
+    {
+      "FirstState":
+        {
+          "Type": "Task",
+          "Resource": "arn:aws:lambda:us-east-1:000000000000:function:helloFunction",
+          "Next": "FinalState"
+        },
+      "FinalState":
+        {
+          "Type": "Succeed"
+        }
+    }
+}
