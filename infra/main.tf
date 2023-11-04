@@ -28,6 +28,6 @@ module "sfn_localstack" {
   sfn_name = "localstackStepFunction"
 }
 
-# module "api_gateway" {
-#   source = "./modules/apigateway"
-# }
+module "api_gateway" {
+  source = "./modules/apigateway"
+}

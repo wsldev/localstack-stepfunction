@@ -4,6 +4,7 @@ locals {
     # python: module.lambda_python
     golang: module.lambda_golang
     sfn: module.sfn_localstack
+    gateway: module.api_gateway
   }
 }
 
