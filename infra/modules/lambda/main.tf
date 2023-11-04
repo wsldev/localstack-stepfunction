@@ -26,8 +26,7 @@ variable "handler_zip" {
 }
 
 locals {
-  path = "${substr(var.LAMBDA_MOUNT_CWD, 0,
-    length(var.LAMBDA_MOUNT_CWD) -6)}/${var.code_path}"
+  path = "${var.LAMBDA_MOUNT_CWD}/${var.code_path}"
 }
 
 resource "aws_lambda_function" "exampleFunction" {
@@ -62,4 +61,8 @@ output "function_url" {
 
 output "function_arn" {
   value = aws_lambda_function.exampleFunction.arn
+}
+
+output "code_path" {
+  value = local.path
 }
