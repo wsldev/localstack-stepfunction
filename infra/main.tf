@@ -23,10 +23,10 @@ module "lambda_golang" {
   LAMBDA_MOUNT_CWD = var.LAMBDA_MOUNT_CWD
 }
 
-# module "sfn_hello" {
-#   source   = "./modules/sfepfunction"
-#   sfn_name = "sumStepFunction"
-# }
+module "sfn_localstack" {
+  source   = "./modules/sfepfunction"
+  sfn_name = "localstackStepFunction"
+}
 
 # module "api_gateway" {
 #   source = "./modules/apigateway"

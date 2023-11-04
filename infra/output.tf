@@ -3,11 +3,11 @@ locals {
     # node: module.lambda_node
     # python: module.lambda_python
     golang: module.lambda_golang
-    # sfn: module.api_gateway
+    sfn: module.sfn_localstack
   }
 }
 
-output "lambdas_output" {
+output "resources_output" {
   value = [for i in local.modules: i ]
 }
 

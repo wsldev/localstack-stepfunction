@@ -24,3 +24,7 @@ resource "aws_sfn_state_machine" "example_step_function" {
 # resource "aws_cloudwatch_log_group" "sfn_log_group" {
 #   name = "/aws/sfn/example_step_function"
 # }
+
+output "sfn_arn" {
+  value = aws_sfn_state_machine.example_step_function.arn
+}
