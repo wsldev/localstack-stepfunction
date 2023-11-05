@@ -5,7 +5,9 @@ import json
 def lambda_handler(event, context):
     print("Lambda Function Name: ", context.function_name)
     print("Event is: ", event)
-    event_body = json.loads(event['body'])
+    # event_body = json.loads(event['body'])
+    lambdaNodeResult = event['lambdaNodeResult']
+    event_body = (event['body'])
     number1 = event_body["number1"]
     number2 = event_body["number2"]
 
@@ -15,5 +17,9 @@ def lambda_handler(event, context):
 
     return {
       "statusCode": 200,
-      "body": json.dumps({ 'result': result })
+      "body": {
+        'message': "Hello lambda python!!!",
+        'result': result
+        },
+        'lambdaNodeResult': lambdaNodeResult
     }

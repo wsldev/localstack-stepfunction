@@ -15,9 +15,9 @@ export const handler = async (event, context) => {
   return {
     statusCode: 200,
     body: {
-      message: "Hello lambda node!!!",
+      message: "response lambda node!!!",
       result,
-      context,
+      // context,
     },
   };
 };

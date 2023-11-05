@@ -38,7 +38,17 @@ paths:
                 "method.response.header.apiKey": "integration.response.header.apiKey"
             },
             "responseTemplates": {
-                "application/json" : "#set ($parsedPayload = $util.parseJson($input.json('$.output'))) $parsedPayload"
+                "application/json": "#set ($path = $input.path(\"$\"))
+                {
+                  \"name\": \"$path.name\",
+                  \"status\" : \"$path.status\",
+                  \"startDate\": \"$path.startDate\",
+                  \"stopDate\" : \"$path.stopDate\",
+                  \"output\": $path.output,
+                  \"input\": $path.input
+                }"
+                # "application/json" : "#set ($payload = $input.json('$')) $payload"
+                #"application/json" : "#set ($parsedPayload = $util.parseJson($input.json('$.output'))) $parsedPayload"
             }
           }
         }

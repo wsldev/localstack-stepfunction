@@ -5,14 +5,52 @@
     {
       "invokeLambdaNode":
         {
+          "Comment": "Invoke lambda node",
           "Type": "Task",
           "Resource": "arn:aws:lambda:us-east-1:000000000000:function:nodeFunction",
-          "ResultPath": "$",
+          "ResultPath": "$.data.lambdaNodeResult",
+          "OutputPath": "$.data",
           "Parameters": {
-            "FunctionName": "arn:aws:lambda:us-east-1:000000000000:function:nodeFunction",
-            "payload.$": "$"
+            "FunctionName": "nodeFunction",
+            "Payload.$": "$"
           },
-          "End": true
+          "Next": "ChoiceState"
+        },
+        "ChoiceState": {
+          "Comment": "Validate result lambda node",
+          "Type": "Choice",
+          "Choices": [
+            {
+              "Variable": "$.lambdaNodeResult.statusCode",
+              "NumericEquals": 200,
+              "Next": "invokeLambdaPython"
+            }
+          ],
+          "Default": "FailState"
+        },
+        "invokeLambdaPython": {
+          "Comment": "Invoke lambda node",
+          "Type": "Task",
+          "Resource": "arn:aws:lambda:us-east-1:000000000000:function:pythonFunction",
+          "ResultPath": "$.data.lambdaPythonResult",
+          "OutputPath": "$.data",
+          "Parameters": {
+            "FunctionName": "pythonFunction",
+            "Payload": {
+              "lambdaNodeResult.$": "$.lambdaNodeResult",
+              "body": {
+                "number1": 2,
+                "number2": 3
+              }
+            }
+          },
+          "Next": "SuccessState"
+        },
+        "SuccessState": {
+          "Type": "Succeed"
+        },
+        "FailState": {
+          "Type": "Fail"
         }
     }
 }

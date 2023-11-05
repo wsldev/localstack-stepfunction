@@ -5,14 +5,14 @@ module "lambda_node" {
   LAMBDA_MOUNT_CWD = var.LAMBDA_MOUNT_CWD
 }
 
-# module "lambda_python" {
-#   source           = "./modules/lambda"
-#   function_name    = "pythonFunction"
-#   code_path        = "code/src/handlers/python"
-#   runtime          = "python3.11"
-#   handler          = "lambda_function.lambda_handler"
-#   LAMBDA_MOUNT_CWD = var.LAMBDA_MOUNT_CWD
-# }
+module "lambda_python" {
+  source           = "./modules/lambda"
+  function_name    = "pythonFunction"
+  code_path        = "code/src/handlers/python"
+  runtime          = "python3.11"
+  handler          = "lambda_function.lambda_handler"
+  LAMBDA_MOUNT_CWD = var.LAMBDA_MOUNT_CWD
+}
 
 # module "lambda_golang" {
 #   source           = "./modules/lambda"
