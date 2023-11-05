@@ -1,9 +1,9 @@
-# module "lambda_node" {
-#   source           = "./modules/lambda"
-#   function_name    = "nodeFunction"
-#   code_path        = "code/src/handlers/node"
-#   LAMBDA_MOUNT_CWD = var.LAMBDA_MOUNT_CWD
-# }
+module "lambda_node" {
+  source           = "./modules/lambda"
+  function_name    = "nodeFunction"
+  code_path        = "code/src/handlers/node"
+  LAMBDA_MOUNT_CWD = var.LAMBDA_MOUNT_CWD
+}
 
 # module "lambda_python" {
 #   source           = "./modules/lambda"
@@ -14,14 +14,14 @@
 #   LAMBDA_MOUNT_CWD = var.LAMBDA_MOUNT_CWD
 # }
 
-module "lambda_golang" {
-  source           = "./modules/lambda"
-  function_name    = "golangFunction"
-  code_path        = "code/src/handlers/golang"
-  runtime          = "go1.x"
-  handler          = "main"
-  LAMBDA_MOUNT_CWD = var.LAMBDA_MOUNT_CWD
-}
+# module "lambda_golang" {
+#   source           = "./modules/lambda"
+#   function_name    = "golangFunction"
+#   code_path        = "code/src/handlers/golang"
+#   runtime          = "go1.x"
+#   handler          = "main"
+#   LAMBDA_MOUNT_CWD = var.LAMBDA_MOUNT_CWD
+# }
 
 module "sfn_localstack" {
   source   = "./modules/sfepfunction"

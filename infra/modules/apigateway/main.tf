@@ -1,5 +1,5 @@
 data "template_file" step_api_swagger{
-  template = "${file("${path.module}/SwaggerForAPIGateway.yml")}"
+  template = "${file("${path.module}/OpenForAPIGateway.yml")}"
 }
 
 resource "aws_api_gateway_rest_api" "api-gateway-sfn" {

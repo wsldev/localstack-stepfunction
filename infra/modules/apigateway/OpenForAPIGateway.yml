@@ -1,0 +1,57 @@
+openapi: 3.0.3
+
+info:
+  title: Helloworld API
+  description: API defining the operations available in the Hello World API
+  version: 0.1.0
+servers:
+  - url: "https://helloworld.api.com/v1"
+    description: Production API endpoint for the Hello World API
+
+paths:
+  "/startStepFunctions":
+    post:
+      description: "This endpoint starts execution of an AWS Step Functions workflow"
+      responses:
+        200:
+           description: "The Step functions call was successful"
+           content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+        400:
+           description: "400 Error. Please check logs"
+        500:
+           description: "500 Error. Please check logs"
+      x-amazon-apigateway-integration:
+        type: "aws" #This enables you to redirect the call to this endpoint to an AWS service
+        uri: "arn:aws:apigateway:us-east-1:states:action/StartSyncExecution" #This is to make sure any Step functions in the us-east-1 region can be called
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_templates"
+        requestTemplates: {
+          "application/json": "{\n  \"stateMachineArn\": \"arn:aws:states:us-east-1:000000000000:stateMachine:localstackStepFunction\",\n  \"input\": {\n    \"body\": $input.json('$')\n  }\n}"
+        }
+        "responses": {
+          "200": {
+            "statusCode": "200",
+            "responseParameters": {
+                "method.response.header.apiKey": "integration.response.header.apiKey"
+            },
+            "responseTemplates": {
+                "application/json" : "#set ($parsedPayload = $util.parseJson($input.json('$.output'))) $parsedPayload"
+            }
+          }
+        }
+
+components:
+  schemas:
+    Message:
+      type: object
+      properties:
+        message:
+          type: string
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      name: x-api-key
+      in: header

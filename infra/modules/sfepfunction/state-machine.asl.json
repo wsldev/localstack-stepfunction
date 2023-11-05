@@ -1,17 +1,18 @@
 {
   "Comment": "An example of the Amazon States Language using wait states",
-  "StartAt": "LambdaGoState",
+  "StartAt": "invokeLambdaNode",
   "States":
     {
-      "LambdaGoState":
+      "invokeLambdaNode":
         {
           "Type": "Task",
-          "Resource": "arn:aws:lambda:us-east-1:000000000000:function:golangFunction",
-          "Next": "SucessState"
-        },
-      "SucessState":
-        {
-          "Type": "Succeed"
+          "Resource": "arn:aws:lambda:us-east-1:000000000000:function:nodeFunction",
+          "ResultPath": "$",
+          "Parameters": {
+            "FunctionName": "arn:aws:lambda:us-east-1:000000000000:function:nodeFunction",
+            "payload.$": "$"
+          },
+          "End": true
         }
     }
 }

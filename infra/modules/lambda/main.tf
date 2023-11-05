@@ -11,17 +11,17 @@ variable "function_name" {
 }
 
 variable "handler" {
-  type = string
+  type    = string
   default = "index.handler"
 }
 
 variable "runtime" {
-  type = string
+  type    = string
   default = "nodejs16.x"
 }
 
 variable "handler_zip" {
-  type = bool
+  type    = bool
   default = false
 }
 
@@ -30,14 +30,14 @@ locals {
 }
 
 resource "aws_lambda_function" "exampleFunction" {
-  s3_bucket        = "hot-reload"
-  s3_key           = local.path
-  # filename = var.handler_zip ? "${local.path}/main.zip" : null
-  function_name    = var.function_name
-  role             = aws_iam_role.lambda-execution-role.arn
-  handler          = var.handler
-  runtime          = var.runtime
-  timeout          = 30
+  s3_bucket     = "hot-reload"
+  s3_key        = local.path
+  function_name = var.function_name
+  role          = aws_iam_role.lambda-execution-role.arn
+  handler       = var.handler
+  runtime       = var.runtime
+  memory_size   = 128
+  timeout       = 30
   environment {
     variables = {
       FUNCTION_NAME = var.function_name
