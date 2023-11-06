@@ -1,48 +1,57 @@
 package main
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 
-	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
-type Person struct {
-	FirstName *string `json:"firstName"`
-	LastName  *string `json:"lastName"`
-	Numero1   *int    `json:"numero1"`
-	Numero2   *int    `json:"numero2"`
+type Payload struct {
+	Body RequestBody
+}
+
+type RequestBody struct {
+	FirstName string `json:"firstName"`
+	Number1   int    `json:"number1"`
+	Number2   int    `json:"number2"`
+}
+
+type Response struct {
+	StatusCode int               `json:"statusCode,omitempty"`
+	Headers    map[string]string `json:"headers,omitempty"`
+	Body       ResponseBody      `json:"body,omitempty"`
 }
 
 type ResponseBody struct {
-	Message *string `json:"message"`
-	Result  int     `json:"result"`
+	Message string `json:"message"`
+	Result  int    `json:"result"`
 }
 
-func HandleRequest(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	var person Person
+func HandleRequest(request map[string]interface{}) (Response, error) {
+	var payload Payload
 
-	err := json.Unmarshal([]byte(request.Body), &person)
+	jsonStr, err := json.Marshal(request)
 	if err != nil {
-		return events.APIGatewayProxyResponse{}, err
+		fmt.Println(err)
 	}
 
-	msg := fmt.Sprintf("Hello %v %v!!!!", *person.FirstName, *person.LastName)
-
-	responseBody := ResponseBody{
-		Message: &msg,
-		Result:  soma(*person.Numero1, *person.Numero2),
+	if err := json.Unmarshal(jsonStr, &payload); err != nil {
+		fmt.Println(err)
 	}
 
-	jbytes, _ := json.Marshal(responseBody)
+	sum := soma(payload.Body.Number1, payload.Body.Number2)
 
-	jstr := string(jbytes)
+	msg := fmt.Sprintf("Hello %s !!!!", payload.Body.FirstName)
 
-	response := events.APIGatewayProxyResponse{
+	lambdaResponse := ResponseBody{
+		Message: msg,
+		Result:  sum,
+	}
+
+	response := Response{
 		StatusCode: 200,
-		Body:       jstr,
+		Body:       lambdaResponse,
 	}
 
 	return response, nil
